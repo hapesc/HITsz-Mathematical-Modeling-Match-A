@@ -28,7 +28,8 @@ def filter1d(raw_data,T=125):
 
 #   先平滑数据,再计算
 #   加大窗口
-T=125     #   阈值法的窗口设为125,峰值法设为11
+T=125 
+K =1.45     #   阈值法的窗口设为125,峰值法设为11
 data_p=np.zeros(raw_data_M.shape)
 data_p[:,0]=raw_data_M[:,0]
 for k in range(len(raw_data_M[:,0])):
@@ -47,7 +48,7 @@ E_acc=normalization(E_acc)
 E_omega=normalization(E_omega)
 
 #   设立阈值,提取手势区间
-threshold=filter1d(E_acc,T=5000)*2
+threshold=filter1d(E_acc,T=5000)*K
 g_point=np.array(np.where(E_acc>threshold)).flatten()
 t_point=np.array(np.where(E_acc<=threshold)).flatten()
 g_point2=pd.Series(g_point)
@@ -112,7 +113,7 @@ sum_data_w = normalization(sum_data_w)
 ans=sum_data_a
 flip = move_avg(ans,5000)
 for x in np.nditer(flip, op_flags=['readwrite']): 
-    x[...] = x * 2
+    x[...] = x * K
 
 Time=Time.flatten()
 
